@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio.exe</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Consolas,monospace;
+}
+
+body{
+    background:#090909;
+    color:#00ff88;
+    overflow:hidden;
+}
+
+canvas{
+    position:fixed;
+    inset:0;
+    z-index:-1;
+}
+
+.container{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.card{
+    width:700px;
+    max-width:90%;
+    background:#111;
+    border:2px solid #00ff88;
+    padding:40px;
+    border-radius:15px;
+    box-shadow:0 0 30px #00ff8840;
+}
+
+h1{
+    font-size:40px;
+    margin-bottom:15px;
+}
+
+.progress{
+    height:25px;
+    background:#222;
+    border-radius:20px;
+    overflow:hidden;
+    margin:20px 0;
+}
+
+.bar{
+    width:0%;
+    height:100%;
+    background:linear-gradient(90deg,#00ff88,#00ffaa);
+    transition:.2s;
+}
+
+button{
+    margin-top:25px;
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#00ff88;
+    color:black;
+    font-weight:bold;
+}
+
+button:hover{
+    transform:scale(1.05);
+}
+
+#console{
+    margin-top:20px;
+    background:black;
+    height:170px;
+    overflow:auto;
+    padding:15px;
+    border-radius:10px;
+}
+
+.bug{
+    position:absolute;
+    font-size:40px;
+    cursor:pointer;
+    user-select:none;
+}
+
+.stats{
+    margin-top:15px;
+    line-height:1.8;
+}
+
+footer{
+    margin-top:20px;
+    opacity:.7;
+}
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="bug" id="bug">🐞</div>
+
+<div class="container">
+
+<div class="card">
+
+<h1>404: Portfolio Not Found</h1>
+
+<p>
+Current Status:
+<b>Still Debugging My Life...</b>
+</p>
+
+<div class="progress">
+<div class="bar"></div>
+</div>
+
+<div class="stats">
+Assignments Finished : 3/27<br>
+Stack Overflow Visits : 98,643<br>
+Coffee Level : ██████████ 999%<br>
+Sleep : undefined<br>
+Bugs : Feature
+</div>
+
+<button onclick="compilePortfolio()">
+Compile Portfolio
+</button>
+
+<div id="console"></div>
+
+<footer>
+© CS Student • Currently converting caffeine into code...
+</footer>
+
+</div>
+</div>
+
+<script>
+// Matrix Rain
+
+const canvas=document.getElementById("matrix");
+const ctx=canvas.getContext("2d");
+
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+const chars="01{}[]()<>=+-*/#@$%^&";
+const size=16;
+const columns=canvas.width/size;
+const drops=[];
+
+for(let i=0;i<columns;i++) drops[i]=1;
+
+function draw(){
+
+ctx.fillStyle="rgba(0,0,0,.05)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="#00ff88";
+ctx.font=size+"px monospace";
+
+for(let i=0;i<drops.length;i++){
+
+const text=chars[Math.floor(Math.random()*chars.length)];
+
+ctx.fillText(text,i*size,drops[i]*size);
+
+if(drops[i]*size>canvas.height&&Math.random()>.975)
+drops[i]=0;
+
+drops[i]++;
+
+}
+
+}
+
+setInterval(draw,40);
+
+
+// Compile Simulation
+
+const messages=[
+"Initializing portfolio...",
+"Installing confidence...",
+"Removing tutorial code...",
+"Searching Stack Overflow...",
+"Fixing one bug...",
+"Created 7 more bugs...",
+"Centering a div...",
+"Still centering the div...",
+"Div successfully centered.",
+"Oops... CSS broke everything.",
+"Convincing recruiter I'm full-stack...",
+"Adding dark mode...",
+"Deleting node_modules...",
+"Regenerating node_modules...",
+"Coffee.exe launched.",
+"Almost done..."
+];
+
+const consoleBox=document.getElementById("console");
+const bar=document.querySelector(".bar");
+
+function compilePortfolio(){
+
+consoleBox.innerHTML="";
+let progress=0;
+
+const interval=setInterval(()=>{
+
+let msg=messages[Math.floor(Math.random()*messages.length)];
+
+consoleBox.innerHTML+="> "+msg+"<br>";
+
+consoleBox.scrollTop=consoleBox.scrollHeight;
+
+progress+=Math.random()*12;
+
+if(progress>97)
+progress=97;
+
+bar.style.width=progress+"%";
+
+},500);
+
+setTimeout(()=>{
+
+clearInterval(interval);
+
+bar.style.width="100%";
+
+consoleBox.innerHTML+="<br>> Build Successful!<br>";
+consoleBox.innerHTML+="> Portfolio launching soon...<br>";
+consoleBox.innerHTML+="> Until then, enjoy the bugs.";
+
+confetti();
+
+},8000);
+
+}
+
+
+// Escaping Bug
+
+const bug=document.getElementById("bug");
+
+function moveBug(){
+
+bug.style.left=Math.random()*(window.innerWidth-50)+"px";
+bug.style.top=Math.random()*(window.innerHeight-50)+"px";
+
+}
+
+moveBug();
+
+bug.addEventListener("mouseover",moveBug);
+
+
+// Tiny Confetti
+
+function confetti(){
+
+for(let i=0;i<150;i++){
+
+let piece=document.createElement("div");
+
+piece.style.position="fixed";
+piece.style.width="8px";
+piece.style.height="8px";
+piece.style.background=`hsl(${Math.random()*360},100%,50%)`;
+piece.style.left=Math.random()*100+"vw";
+piece.style.top="-10px";
+piece.style.borderRadius="50%";
+piece.style.transition="4s linear";
+
+document.body.appendChild(piece);
+
+setTimeout(()=>{
+piece.style.transform=`translateY(110vh) rotate(${Math.random()*720}deg)`;
+},10);
+
+setTimeout(()=>{
+piece.remove();
+},4200);
+
+}
+
+}
+</script>
+
+</body>
+</html>
